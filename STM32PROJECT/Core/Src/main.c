@@ -52,6 +52,7 @@ static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 void display7SEG(int num);
 void update7SEG(int index);
+void updateClockBuffer();
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -65,6 +66,7 @@ void update7SEG(int index);
   * @brief  The application entry point.
   * @retval int
   */
+int hour = 15, minute = 8, second = 50;
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -96,8 +98,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(50);
-  int counter = 0;
+  setTimer1(100);
+  setTimer2(100);
+  int index_led = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
@@ -106,11 +109,30 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  if(timer1_flag == 1){
-		  update7SEG(counter++);
-		  if(counter > 3){
-			  counter = 0;
+		  if(second >= 60){
+			  second = 0;
+			  minute++;
 		  }
-		  setTimer1(50);
+		  if(minute >= 60){
+			  minute = 0;
+			  hour++;
+		  }
+		  if(hour >= 24){
+			  hour = 0;
+		  }
+		  second++;
+		  updateClockBuffer(hour, minute);
+		  setTimer1(100);
+	  }
+	  if(timer2_flag == 1){
+		  update7SEG(index_led);
+		  if(index_led >= 3){
+			  index_led = 0;
+		  }
+		  else{
+			  index_led++;
+		  }
+		  setTimer2(100);
 	  }
     /* USER CODE BEGIN 3 */
   }
@@ -369,6 +391,12 @@ void display7SEG (int num){
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, RESET);
 			break;
 	}
+}
+void updateClockBuffer(){
+	led_buffer[0] = hour/10;
+	led_buffer[1] = hour%10;
+	led_buffer[2] = minute/10;
+	led_buffer[3] = minute%10;
 }
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	timerRun();
