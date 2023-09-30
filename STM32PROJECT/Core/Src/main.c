@@ -108,32 +108,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  if(timer1_flag == 1){
-		  if(second >= 60){
-			  second = 0;
-			  minute++;
-		  }
-		  if(minute >= 60){
-			  minute = 0;
-			  hour++;
-		  }
-		  if(hour >= 24){
-			  hour = 0;
-		  }
-		  second++;
-		  updateClockBuffer(hour, minute);
-		  setTimer1(100);
-	  }
-	  if(timer2_flag == 1){
-		  update7SEG(index_led);
-		  if(index_led >= 3){
-			  index_led = 0;
-		  }
-		  else{
-			  index_led++;
-		  }
-		  setTimer2(100);
-	  }
+	//TODO EX5
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
