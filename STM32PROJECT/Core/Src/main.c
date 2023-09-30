@@ -19,7 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "software_timer.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -50,6 +50,7 @@ TIM_HandleTypeDef htim2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
+void display7SEG(int num);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -97,11 +98,49 @@ int main(void)
   setTimer1(50);
   int led = 1;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  if(timer1_flag == 1){
+		 switch(led){
+		 case 1:
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, RESET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+			 display7SEG(led);
+			 led = 2;
+			 break;
+		 case 2:
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, RESET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+			 display7SEG(led);
+			 led = 3;
+			 break;
+		 case 3:
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, RESET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+			 display7SEG(led);
+			 led = 0;
+			 break;
+		 case 0:
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
+			 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, RESET);
+			 display7SEG(led);
+			 led = 1;
+			 break;
+		 }
+		 setTimer1(50);
+	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
