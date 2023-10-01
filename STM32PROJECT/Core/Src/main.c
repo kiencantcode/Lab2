@@ -99,12 +99,14 @@ int main(void)
   int led = 1;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
   while (1)
   {
     /* USER CODE END WHILE */
 	  if(timer1_flag == 1){
 		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
 		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_7);
+		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 		  if(led == 1){
 			  display7SEG(led);
 			  led = 2;
