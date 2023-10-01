@@ -102,11 +102,15 @@ int main(void)
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
   while (1)
   {
     /* USER CODE END WHILE */
-	  if(timer1_flag == 1){
+	  if(timer1_flag == 1){\
 		  update7SEG(counter++);
+	  	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+	  	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 		  if(counter > 3){
 			  counter = 0;
 		  }
