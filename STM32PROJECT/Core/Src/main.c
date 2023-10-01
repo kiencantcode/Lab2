@@ -104,6 +104,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   setTimer1(100);
   int i = 0;
+  int j = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
@@ -114,14 +115,16 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  if(timer1_flag == 1){
-		  writeCOL(i);
+		  writeCOL((i+j)%8);
 		  writeROW(A,i);
 		  setTimer1(100) ;
 		  i++;
 		  if(i == 8){
 			  i = 0;
-		  	  setTimer1(100);
+			  j++;
 		  }
+		  if(j == 8) j = 0;
+		  setTimer1(100);
 	  }
     /* USER CODE BEGIN 3 */
   }
