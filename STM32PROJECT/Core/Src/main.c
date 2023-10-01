@@ -100,7 +100,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   setTimer1(25);
   setTimer2(50);
-  setTimer2(100);
+  setTimer3(100);
   int index_led = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
