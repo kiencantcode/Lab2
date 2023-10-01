@@ -19,7 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "software_timer.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -50,6 +50,11 @@ TIM_HandleTypeDef htim2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
+void display7SEG (int num);
+void update7SEG(int index);
+void updateClockBuffer();
+void writeCOL (int i);
+void writeROW (uint8_t *A, int i);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -63,6 +68,9 @@ static void MX_TIM2_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+int hour = 15, minute = 8, second = 50;
+uint8_t COL [] = {0xFE , 0xFD , 0xFB , 0xF7 , 0xEF , 0xDF , 0xBF ,0x7F};
+uint8_t A[] = {0xFF , 0xC0 , 0x80 , 0x33 , 0x33 , 0x80 , 0xC0 , 0xFF};
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -94,10 +102,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(25);
-  setTimer2(50);
-  setTimer3(100);
-  int index_led = 0;
+  setTimer1(100);
+  int i = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
@@ -108,36 +114,15 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  if(timer1_flag == 1){
-	  		  if(second >= 60){
-	  			  second = 0;
-	  			  minute++;
-	  		  }
-	  		  if(minute >= 60){
-	  			  minute = 0;
-	  			  hour++;
-	  		  }
-	  		  if(hour >= 24){
-	  			  hour = 0;
-	  		  }
-	  		  second++;
-	  		  updateClockBuffer(hour, minute);
-	  		  setTimer1(25);
-	  	  }
-	  	  if(timer2_flag == 1){
-	  		  update7SEG(index_led);
-	  		  if(index_led >= 3){
-	  			  index_led = 0;
-	  		  }
-	  		  else{
-	  			  index_led++;
-	  		  }
-	  		  setTimer2(50);
-	  	  }
-	  	  if(timer3_flag == 1){
-	  		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
-	  		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-	  		  setTimer3(100);
-	  	  }
+		  writeCOL(i);
+		  writeROW(A,i);
+		  setTimer1(100) ;
+		  i++;
+		  if(i == 8){
+			  i = 0;
+		  	  setTimer1(100);
+		  }
+	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -413,6 +398,26 @@ void updateClockBuffer(){
 	led_buffer[1] = hour%10;
 	led_buffer[2] = minute/10;
 	led_buffer[3] = minute%10;
+}
+void writeCOL (int i){
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_2, ( COL[i] >> 0) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_3, ( COL[i] >> 1) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_10, ( COL[i] >> 2) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_11, ( COL[i] >> 3) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_12, ( COL[i] >> 4) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_13, ( COL[i] >> 5) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_14, ( COL[i] >> 6) & 0x01 );
+	HAL_GPIO_WritePin (GPIOA , GPIO_PIN_15, ( COL[i] >> 7) & 0x01 );
+}
+void writeROW ( uint8_t *A, int i){
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_8, (A[i] >> 0) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_9, (A[i] >> 1) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_10, (A[i] >> 2) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_11, (A[i] >> 3) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_12, (A[i] >> 4) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_13, (A[i] >> 5) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_14, (A[i] >> 6) & 0x01 );
+	HAL_GPIO_WritePin (GPIOB , GPIO_PIN_15, (A[i] >> 7) & 0x01 );
 }
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	timerRun();
