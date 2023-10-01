@@ -98,13 +98,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(100);
+  setTimer1(25);
+  setTimer2(50);
   setTimer2(100);
   int index_led = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, SET);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
   while (1)
   {
     /* USER CODE END WHILE */
@@ -122,7 +125,7 @@ int main(void)
 		  }
 		  second++;
 		  updateClockBuffer(hour, minute);
-		  setTimer1(100);
+		  setTimer1(25);
 	  }
 	  if(timer2_flag == 1){
 		  update7SEG(index_led);
@@ -132,7 +135,12 @@ int main(void)
 		  else{
 			  index_led++;
 		  }
-		  setTimer2(100);
+		  setTimer2(50);
+	  }
+	  if(timer3_flag == 1){
+		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+		  setTimer3(100);
 	  }
     /* USER CODE BEGIN 3 */
   }
