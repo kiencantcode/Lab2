@@ -117,8 +117,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(100);
- 8000168:	2064      	movs	r0, #100	; 0x64
+  setTimer1(1);
+ 8000168:	2001      	movs	r0, #1
  800016a:	f000 fa2f 	bl	80005cc <setTimer1>
   int i = 0;
  800016e:	2300      	movs	r3, #0
@@ -182,8 +182,8 @@ int main(void)
 			  i = 0;
  80001da:	2300      	movs	r3, #0
  80001dc:	607b      	str	r3, [r7, #4]
-		  	  setTimer1(100);
- 80001de:	2064      	movs	r0, #100	; 0x64
+		  	  setTimer1(1);
+ 80001de:	2001      	movs	r0, #1
  80001e0:	f000 f9f4 	bl	80005cc <setTimer1>
 	  if(timer1_flag == 1){
  80001e4:	e7e5      	b.n	80001b2 <main+0x66>
@@ -317,9 +317,9 @@ static void MX_TIM2_Init(void)
  800028c:	4b1d      	ldr	r3, [pc, #116]	; (8000304 <MX_TIM2_Init+0x94>)
  800028e:	f04f 4280 	mov.w	r2, #1073741824	; 0x40000000
  8000292:	601a      	str	r2, [r3, #0]
-  htim2.Init.Prescaler = 7999;
+  htim2.Init.Prescaler = 799;
  8000294:	4b1b      	ldr	r3, [pc, #108]	; (8000304 <MX_TIM2_Init+0x94>)
- 8000296:	f641 723f 	movw	r2, #7999	; 0x1f3f
+ 8000296:	f240 321f 	movw	r2, #799	; 0x31f
  800029a:	605a      	str	r2, [r3, #4]
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
  800029c:	4b19      	ldr	r3, [pc, #100]	; (8000304 <MX_TIM2_Init+0x94>)
