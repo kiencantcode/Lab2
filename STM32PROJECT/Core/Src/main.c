@@ -102,7 +102,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(100);
+  setTimer1(4);
   int i = 0;
   int j = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
@@ -124,7 +124,7 @@ int main(void)
 			  j++;
 		  }
 		  if(j == 8) j = 0;
-		  setTimer1(100);
+		  setTimer1(4);
 	  }
     /* USER CODE BEGIN 3 */
   }
@@ -185,7 +185,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 7999;
+  htim2.Init.Prescaler = 799;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 9;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
