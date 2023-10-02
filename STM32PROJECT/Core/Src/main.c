@@ -102,7 +102,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(4);
+  setTimer1(25);
+  setTimer2(50);
+  setTimer3(10);
+  setTimer4(20);
+  int index_led = 0;
   int i = 0;
   int j = 0;
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
@@ -115,17 +119,48 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	  if(timer1_flag == 1){
-		  writeCOL((i+j)%8);
-		  writeROW(A,i);
-		  setTimer1(100) ;
-		  i++;
-		  if(i == 8){
-			  i = 0;
-			  j++;
+	  		  if(second >= 60){
+	  			  second = 0;
+	  			  minute++;
+	  		  }
+	  		  if(minute >= 60){
+	  			  minute = 0;
+	  			  hour++;
+	  		  }
+	  		  if(hour >= 24){
+	  			  hour = 0;
+	  		  }
+	  		  second++;
+	  		  updateClockBuffer(hour, minute);
+	  		  setTimer1(25);
+	  	  }
+	  	  if(timer2_flag == 1){
+	  		  update7SEG(index_led);
+	  		  if(index_led >= 3){
+	  			  index_led = 0;
+	  		  }
+	  		  else{
+	  			  index_led++;
+	  		  }
+	  		  setTimer2(50);
+	  	  }
+	  	  if(timer3_flag == 1){
+	  		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+	  		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
+	  		  setTimer3(10);
+	  	  }
+	  	  if(timer4_flag == 1){
+	  		  writeCOL((i+j)%8);
+	  		  writeROW(A,i);
+	  		  setTimer4(4) ;
+	  		  i++;
+	  		  if(i == 8){
+	  			  i = 0;
+	  			  j++;
 		  }
-		  if(j == 8) j = 0;
-		  setTimer1(4);
-	  }
+	  		  if(j == 8) j = 0;
+	  		  setTimer4(20);
+	  	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -185,7 +220,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 799;
+  htim2.Init.Prescaler = 7999;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 9;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
